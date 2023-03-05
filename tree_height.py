@@ -1,14 +1,9 @@
-##221RDC037
-##RDCM0 Finanšu inženierija
-##18.grupa
-
 import sys
 import threading
 
 
-def compute_height(n, parents): 
+def compute_height(n, parents):
     nodes = [[] for _ in range(n)]
-
     for i in range(n):
         if parents[i] == -1:
             root = i
@@ -23,24 +18,27 @@ def compute_height(n, parents):
 
 
 def main():
+    input_type = input("Enter input type (I for input, F for file): ")
     
-    filename = input("Enter filename (or press Enter for keyboard input): ")
-
-    if filename and 'a' not in filename:
+    if input_type == "I":
+        n = int(input())
+        parents = list(map(int, input().split()))
+    elif input_type == "F":
+        filename = input("Enter filename: ")
+        
         try:
             with open(filename) as file:
                 n = int(file.readline())
                 parents = list(map(int, file.readline().split()))
         except FileNotFoundError:
-            print(f"Error: File {filename} not found")
+            print("Error: File not found")
             return
     else:
-        n = int(input())
-        parents = list(map(int, input().split()))
-
-    
+        print("Error: Invalid input type")
+        return
     print(compute_height(n, parents))
 
-sys.setrecursionlimit(10**7) 
-threading.stack_size(2**27)   
+
+sys.setrecursionlimit(10**7)
+threading.stack_size(2**27) 
 threading.Thread(target=main).start()
