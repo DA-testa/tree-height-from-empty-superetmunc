@@ -3,22 +3,25 @@ import sys
 import threading
 
 
-def compute_height(n, parents):
-    nodes = [[] for _ in range(n)]
-    
-    for i in range(n):
-        if parents[i] == -1:
+def build_tree(n, parents):
+    tree = [[] for _ in range(n)]
+    root = None
+
+    for i, parent in enumerate(parents):
+        if parent == -1:
             root = i
         else:
-            nodes[parents[i]].append(i)
-    
-    def height(node):
-        if not nodes[node]:
-            return 1
-        else:
-            return 1 + max(height(child) for child in nodes[node])
-    
-    return height(root)
+            tree[parent].append(i)
+
+    return tree, root
+
+
+def compute_height(tree, root):
+    if not tree[root]:
+        return 1
+    else:
+        heights = [compute_height(tree, child) for child in tree[root]]
+        return 1 + max(heights)
 
 
 def main():
@@ -26,7 +29,6 @@ def main():
     if input_type == "I":
         n = int(input())
         parents = list(map(int, input().split()))
-    
     elif input_type == "F":
         filename = input("Enter filename: ")
         if filename and 'a' not in filename:
@@ -35,18 +37,17 @@ def main():
             with open(path) as file:
                 n = int(file.readline())
                 parents = list(map(int, file.readline().split()))
-                print(n, parents)
         except FileNotFoundError:
             print(f"Error: File {filename} not found in test folder")
             return
     else:
         n = int(input())
         parents = list(map(int, input().split()))
-    
-    print(compute_height(n, parents))
+
+    tree, root = build_tree(n, parents)
+    print(compute_height(tree, root))
 
 
-
-sys.setrecursionlimit(10**7) 
+sys.setrecursionlimit(10**7)
 threading.stack_size(2**27) 
 threading.Thread(target=main).start()
