@@ -18,13 +18,13 @@ def compute_height(n, parents):
 
 
 def main():
-    input_type = input("Enter input type (I for input, F for file): ")
+    input_type = input("")
     
     if input_type == "I":
         n = int(input())
         parents = list(map(int, input().split()))
     elif input_type == "F":
-        filename = input("Enter filename: ")
+        filename = input("")
         
         try:
             with open(filename) as file:
