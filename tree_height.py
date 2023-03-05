@@ -35,6 +35,7 @@ def main():
             with open(path) as file:
                 n = int(file.readline())
                 parents = list(map(int, file.readline().split()))
+                print(n, parents)
         except FileNotFoundError:
             print(f"Error: File {filename} not found in test folder")
             return
